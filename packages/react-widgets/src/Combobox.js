@@ -82,6 +82,11 @@ let propTypes = {
     emptyList: CustomPropTypes.message,
     emptyFilter: CustomPropTypes.message,
   }),
+
+  hideActiveDescendant: PropTypes.bool,
+  onListSelectionChange: PropTypes.func,
+  withAriaControls: PropTypes.bool,
+  noAriaBusy: PropTypes.bool,
 }
 
 /**
@@ -114,6 +119,9 @@ class Combobox extends React.Component {
     delay: 500,
     selectIcon: caretDown,
     listComponent: List,
+    hideActiveDescendant: false,
+    withAriaControls: false,
+    noAriaBusy: false,
   }
 
   constructor(props, context) {
@@ -247,7 +255,7 @@ class Combobox extends React.Component {
   @widgetEditable
   handleKeyDown = e => {
     let { key, altKey } = e
-    let { open, onKeyDown } = this.props
+    let { open, onKeyDown, onListSelectionChange } = this.props
     let { focusedItem, selectedItem, list } = this.state
 
     notify(onKeyDown, [e])
@@ -258,9 +266,11 @@ class Combobox extends React.Component {
     const focusItem = item => this.setState({ focusedItem: item })
 
     if (key === 'End' && open) {
+      notify(onListSelectionChange)
       e.preventDefault()
       focusItem(list.last())
     } else if (key === 'Home' && open) {
+      notify(onListSelectionChange)
       e.preventDefault()
       focusItem(list.first())
     } else if (key === 'Escape' && open) {
@@ -275,12 +285,14 @@ class Combobox extends React.Component {
       e.preventDefault()
       if (altKey) return this.open()
 
+      notify(onListSelectionChange)
       if (open) focusItem(list.next(focusedItem))
       else select(list.next(selectedItem))
     } else if (key === 'ArrowUp') {
       e.preventDefault()
       if (altKey) return this.close()
 
+      notify(onListSelectionChange)
       if (open) focusItem(list.prev(focusedItem))
       else select(list.prev(selectedItem))
     }
@@ -307,6 +319,9 @@ class Combobox extends React.Component {
       disabled,
       readOnly,
       open,
+      hideActiveDescendant,
+      withAriaControls,
+      noAriaBusy,
     } = this.props
     let { accessors } = this.state
     let valueItem = accessors.findOrSelf(data, value)
@@ -330,10 +345,11 @@ class Combobox extends React.Component {
         suggest={suggest}
         disabled={disabled === true}
         readOnly={readOnly === true}
-        aria-busy={!!busy}
+        aria-busy={noAriaBusy ? null : !!busy}
         aria-owns={this.listId}
+        aria-controls={withAriaControls ? this.listId : null}
         aria-autocomplete={completeType}
-        aria-activedescendant={open ? this.activeId : null}
+        aria-activedescendant={!hideActiveDescendant && open ? this.activeId : null}
         aria-expanded={open}
         aria-haspopup={true}
         placeholder={placeholder}

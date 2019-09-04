@@ -1,11 +1,11 @@
-lib/
-dist/
 **/test/output/
 
 temp/
 
 package-lock.json
 packages/**/yarn.lock
+packages/**/dist
+packages/**/lib
 
 # Logs
 logs

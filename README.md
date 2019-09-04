@@ -1,3 +1,47 @@
+OUIGO - react-widgets
+=============
+This a **fork** of [react-widgets](https://github.com/jquense/react-widgets) to implement à la carte accessibility issues we have in Ouigo front project.
+
+## First time config
+You need to set your remotes as follow :
+```
+git remote set origin https://github.com/jquense/react-widgets.git
+
+git remote add ouigo ouigo@vs-ssh.visualstudio.com:v3/ouigo/OuigoVenteS3/react-widgets
+```
+
+## Update from remote github dir
+```
+git checkout master
+git pull origin
+git checkout #commit-for-latest-version-of-lib
+git checkout -b temp
+git checkout ouigo
+git rebase temp
+```
+
+## Changing the src & building
+You can update src inside packages/react-widgets/src
+
+When done, build the library using :
+```
+yarn --cwd packages/react-widgets build
+```
+Please, ensure that custom scripts are still active and run in packages/react-widgets/package.json :
+```
+"build:cpy": "cpy lib ../../ --parents && cpy dist ../../ --parents && cpy package.json ../../",
+```
+
+## Commiting changes
+```
+ga . && gcmsg 'UPD - ...'
+
+# Push on private repo
+git push ouigo
+```
+
+# Original documentation is below
+
 react-widgets
 =============
 
