@@ -25,6 +25,9 @@ You can update src inside packages/react-widgets/src
 
 When done, build the library using :
 ```
+gco master
+yarn && yarn build
+gco ouigo
 yarn --cwd packages/react-widgets build
 ```
 Please, ensure that custom scripts are still active and run in packages/react-widgets/package.json :

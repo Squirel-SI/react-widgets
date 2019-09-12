@@ -266,11 +266,11 @@ class Combobox extends React.Component {
     const focusItem = item => this.setState({ focusedItem: item })
 
     if (key === 'End' && open) {
-      notify(onListSelectionChange)
+      notify(onListSelectionChange, list.last())
       e.preventDefault()
       focusItem(list.last())
     } else if (key === 'Home' && open) {
-      notify(onListSelectionChange)
+      notify(onListSelectionChange, list.first())
       e.preventDefault()
       focusItem(list.first())
     } else if (key === 'Escape' && open) {
@@ -285,16 +285,25 @@ class Combobox extends React.Component {
       e.preventDefault()
       if (altKey) return this.open()
 
-      notify(onListSelectionChange)
-      if (open) focusItem(list.next(focusedItem))
-      else select(list.next(selectedItem))
+
+      if (open) {
+        focusItem(list.next(focusedItem))
+        notify(onListSelectionChange, list.next(focusedItem))
+      } else {
+        select(list.next(selectedItem))
+        notify(onListSelectionChange, list.next(selectedItem))
+      }
     } else if (key === 'ArrowUp') {
       e.preventDefault()
       if (altKey) return this.close()
 
-      notify(onListSelectionChange)
-      if (open) focusItem(list.prev(focusedItem))
-      else select(list.prev(selectedItem))
+      if (open) {
+        focusItem(list.prev(focusedItem))
+        notify(onListSelectionChange, list.prev(focusedItem))
+      } else {
+        select(list.prev(selectedItem))
+        notify(onListSelectionChange, list.prev(selectedItem))
+      }
     }
   }
   attachListRef = ref => {
