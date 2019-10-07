@@ -152,7 +152,11 @@ class Combobox extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let { value, data, messages, filter, minLength, caseSensitive } = nextProps
-    const { focusedItem } = prevState
+    let { focusedItem } = prevState
+
+    if (!isShallowEqual(prevState.data, data)) {
+      focusedItem = null;
+    }
 
     let accessors = getAccessors(nextProps)
     const valueChanged = value !== prevState.lastValue
