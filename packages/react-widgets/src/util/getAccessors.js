@@ -5,6 +5,7 @@ export default function createAccessors({ textField, valueField }) {
     text: item => helpers.dataText(item, textField),
     value: item => helpers.dataValue(item, valueField),
     indexOf: (data, item) => helpers.dataIndexOf(data, item, valueField),
+    deepIndexOf: (data, item) => helpers.deepIndexOf(data, item),
     matches: (a, b) => helpers.valueMatcher(a, b, valueField),
     findOrSelf: (data, item) => helpers.dataItem(data, item, valueField),
     includes: (data, item) => helpers.dataIndexOf(data, item, valueField) !== -1,

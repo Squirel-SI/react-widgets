@@ -1466,6 +1466,7 @@ function reduceToListState(nextListData, prevList, _temp) {
 
 exports.__esModule = true;
 exports.dataIndexOf = dataIndexOf;
+exports.deepIndexOf = deepIndexOf;
 exports.valueMatcher = valueMatcher;
 exports.dataItem = dataItem;
 exports.dataText = exports.dataValue = void 0;
@@ -1492,6 +1493,25 @@ function dataIndexOf(data, item, valueField) {
 
   var isValueEqual = function isValueEqual(datum) {
     return valueMatcher(item, datum, valueField);
+  };
+
+  while (++idx < data.length) {
+    var datum = data[idx];
+    if (datum === item || isValueEqual(datum)) return idx;
+  }
+
+  return -1;
+}
+
+var deepEqual = function deepEqual(a, b) {
+  return JSON.stringify(a) === JSON.stringify(b);
+};
+
+function deepIndexOf(data, item) {
+  var idx = -1;
+
+  var isValueEqual = function isValueEqual(datum) {
+    return deepEqual(item, datum);
   };
 
   while (++idx < data.length) {
@@ -2554,6 +2574,9 @@ function createAccessors(_ref) {
     },
     indexOf: function indexOf(data, item) {
       return helpers.dataIndexOf(data, item, valueField);
+    },
+    deepIndexOf: function deepIndexOf(data, item) {
+      return helpers.deepIndexOf(data, item);
     },
     matches: function matches(a, b) {
       return helpers.valueMatcher(a, b, valueField);
@@ -8150,11 +8173,6 @@ function (_React$Component) {
         minLength = nextProps.minLength,
         caseSensitive = nextProps.caseSensitive;
     var focusedItem = prevState.focusedItem;
-
-    if (!(0, _.isShallowEqual)(prevState.data, data)) {
-      focusedItem = null;
-    }
-
     var accessors = (0, _getAccessors["default"])(nextProps);
     var valueChanged = value !== prevState.lastValue;
     var selectedIndex = accessors.indexOf(data, value);
@@ -8180,7 +8198,7 @@ function (_React$Component) {
       selectedIndex = accessors.indexOf(data, value);
     }
 
-    var focusedIndex = accessors.indexOf(data, focusedItem);
+    var focusedIndex = accessors.deepIndexOf(data, focusedItem);
 
     if (focusedIndex === -1) {
       // value isn't a dataItem so find the close match

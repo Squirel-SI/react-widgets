@@ -33,6 +33,20 @@ export function dataIndexOf(data, item, valueField) {
   return -1
 }
 
+const deepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+export function deepIndexOf(data, item) {
+  let idx = -1;
+  let isValueEqual = datum => deepEqual(item, datum);
+
+  while (++idx < data.length) {
+    var datum = data[idx];
+    if (datum === item || isValueEqual(datum)) return idx;
+  }
+
+  return -1;
+}
+
 /**
  * I don't know that the shallow equal makes sense here but am too afraid to
  * remove it.

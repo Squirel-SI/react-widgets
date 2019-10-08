@@ -152,11 +152,7 @@ class Combobox extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let { value, data, messages, filter, minLength, caseSensitive } = nextProps
-    let { focusedItem } = prevState
-
-    if (!isShallowEqual(prevState.data, data)) {
-      focusedItem = null;
-    }
+    const { focusedItem } = prevState
 
     let accessors = getAccessors(nextProps)
     const valueChanged = value !== prevState.lastValue
@@ -185,7 +181,7 @@ class Combobox extends React.Component {
       selectedIndex = accessors.indexOf(data, value)
     }
 
-    let focusedIndex = accessors.indexOf(data, focusedItem);
+    let focusedIndex = accessors.deepIndexOf(data, focusedItem);
     if (focusedIndex === -1) {
       // value isn't a dataItem so find the close match
       focusedIndex = Filter.indexOf(data, {
