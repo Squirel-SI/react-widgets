@@ -3034,7 +3034,7 @@ function (_React$Component) {
       tabIndex: !disabled ? '-1' : undefined,
       "aria-selected": !!selected,
       className: (0, _classnames["default"])('rw-list-option', className, classes),
-      onClick: this.handleSelect
+      onMouseDown: this.handleSelect
     }, props), children);
   };
 

@@ -42,7 +42,7 @@ class ListOption extends React.Component {
         tabIndex={!disabled ? '-1' : undefined}
         aria-selected={!!selected}
         className={cn('rw-list-option', className, classes)}
-        onClick={this.handleSelect}
+        onMouseDown={this.handleSelect}
         {...props}
       >
         {children}
